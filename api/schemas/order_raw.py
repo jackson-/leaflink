@@ -3,17 +3,17 @@ from marshmallow import fields
 from base import BaseSchema
 from product_raw import ProductRawSchema
 
-class CompanySchema(BaseSchema):
+class OrderRawSchema(BaseSchema):
     # Keys
     id = fields.Int()
 
     # Own properties
     name = fields.String()
     description = fields.String()
-    company_type = fields.String()
+    price = fields.Float()
 
-    # Reltionships
-    products = fields.Nested(
-        ProductRawSchema,
-        many=True,
-    )
+    # Relationships
+    # products = fields.Nested(
+    #     ProductRawSchema,
+    #     many=True,
+    # )

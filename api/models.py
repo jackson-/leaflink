@@ -12,7 +12,7 @@ class Company(db.Model):
     description = db.Column(db.Text)
     company_type = db.Column(db.Text, nullable=False)
     products = db.relationship("Product", back_populates="company")
-    # orders = db.relationship("Order", back_populates="company")
+    # orders = db.relationship("Order", backref="company")
 
     def __repr__(self):
         """Display when printing a Company object"""
@@ -27,9 +27,10 @@ class Product(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
+    price = db.Column(db.Float)
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
     company = db.relationship("Company", back_populates="products")
-    # orders = db.relationship("LineItem", back_populates="product")
+    line_items = db.relationship("LineItem", back_populates="product")
 
     def __repr__(self):
         """Display when printing a Product object"""
@@ -44,13 +45,11 @@ class Order(db.Model):
     __tablename__ = "orders"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text)
-    buyer_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
-    # buyer = db.relationship("Company", foreign_keys=[buyer_id], back_populates="orders")
-    seller_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
-    # seller = db.relationship("Company", foreign_keys=[seller_id], back_populates="orders")
-    # products = db.relationship("LineItem", back_populates="order")
+    buyer_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
+    buyer = db.relationship("Company", foreign_keys=[buyer_id])
+    seller = db.relationship("Company", foreign_keys=[seller_id])
+    line_items = db.relationship("LineItem", back_populates="order")
 
 
     def __repr__(self):
@@ -67,8 +66,8 @@ class LineItem(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
     quantity = db.Column(db.Integer)
     unit_price = db.Column(db.Float)
-    # product = db.relationship("Product", back_populates="products")
-    # order = db.relationship("Order", back_populates="orders")
+    product = db.relationship("Product", back_populates="line_items")
+    order = db.relationship("Order", back_populates="line_items")
 
     def __repr__(self):
         """Display when printing a Product object"""
