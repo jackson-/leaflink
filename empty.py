@@ -27,7 +27,7 @@ class Empty(Flask):
         self.config.from_envvar("APP_CONFIG", silent=True)
 
     def add_blueprint(self, name, kw):
-        blueprint = _import_variable(name, 'views', 'app')
+        blueprint = _import_variable("api", "endpoints.{0}".format(name), 'app')
         self.register_blueprint(blueprint, **kw)
 
     def add_blueprint_list(self, bp_list):

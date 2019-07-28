@@ -9,7 +9,6 @@ project_name = "leaflink"
 class Config(object):
     DEBUG = False
     TESTING = False
-    USE_X_SENDFILE = False
 
     # DATABASE CONFIGURATION
     SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/%s_dev.sqlite" % project_name
@@ -26,22 +25,12 @@ class Config(object):
 
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
 
-    # EMAIL CONFIGURATION
-    MAIL_SERVER = "localhost"
-    MAIL_PORT = 25
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = False
-    MAIL_DEBUG = DEBUG
-    MAIL_USERNAME = None
-    MAIL_PASSWORD = None
-    DEFAULT_MAIL_SENDER = "example@%s.com" % project_name
-
     DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     BLUEPRINTS = [
-        'api',  # or ('companies', {'url_prefix':'/companies'})
-        # 'products',
-        # 'orders',
+        'company',  # or ('companies', {'url_prefix':'/companies'})
+        'product',
+        'order',
     ]
 
 
