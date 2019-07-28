@@ -1,7 +1,6 @@
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, jsonify, abort
 from flask_apispec import marshal_with
-# from flask_restful import marshal_with as marshal_with2
 from sqlalchemy.exc import IntegrityError
 from webargs import fields
 from webargs.flaskparser import use_kwargs
