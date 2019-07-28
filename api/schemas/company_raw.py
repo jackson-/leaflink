@@ -1,6 +1,6 @@
 from marshmallow import fields
 
-from base import BaseSchema
+from .base import BaseSchema
 
 class CompanyRawSchema(BaseSchema):
     # Keys

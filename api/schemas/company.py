@@ -1,7 +1,7 @@
 from marshmallow import fields
 
-from base import BaseSchema
-from product_raw import ProductRawSchema
+from .base import BaseSchema
+from .product_raw import ProductRawSchema
 
 class CompanySchema(BaseSchema):
     # Keys

@@ -12,7 +12,6 @@ class Company(db.Model):
     description = db.Column(db.Text)
     company_type = db.Column(db.Text, nullable=False)
     products = db.relationship("Product", back_populates="company")
-    # orders = db.relationship("Order", backref="company")
 
     def __repr__(self):
         """Display when printing a Company object"""
@@ -45,17 +44,18 @@ class Order(db.Model):
     __tablename__ = "orders"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    total = db.Column(db.Float)
     buyer_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     seller_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     buyer = db.relationship("Company", foreign_keys=[buyer_id])
     seller = db.relationship("Company", foreign_keys=[seller_id])
-    line_items = db.relationship("LineItem", back_populates="order")
+    line_items = db.relationship("LineItem", back_populates="order", cascade="all, delete-orphan")
 
 
     def __repr__(self):
-        """Display when printing a Product object"""
+        """Display when printing a Order object"""
 
-        return "<Product: {}>".format(self.name)
+        return "<Order: {}>".format(self.name)
 
 
 class LineItem(db.Model):
@@ -70,6 +70,6 @@ class LineItem(db.Model):
     order = db.relationship("Order", back_populates="line_items")
 
     def __repr__(self):
-        """Display when printing a Product object"""
+        """Display when printing a LineItem object"""
 
-        return "<Product: {}>".format(self.name)
+        return "<LineItem: {}>".format(self.name)

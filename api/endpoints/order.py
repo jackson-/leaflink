@@ -43,8 +43,10 @@ def route_order_get_by_id(order_id):
 )
 def route_order_create(buyer_id, seller_id, line_items):
     order = Order(buyer_id=buyer_id, seller_id=seller_id, line_items=[])
+    total = 0
     for li in line_items:
       product = Product.query.filter(Product.id == li['product_id']).first()
+      total += li['quantity'] * product.price
       item = LineItem(
         product=product, 
         order=order,
@@ -52,30 +54,12 @@ def route_order_create(buyer_id, seller_id, line_items):
         unit_price=li['quantity'] * product.price
       )
       order.line_items.append(item)
+    order.total = total
     db.session.add(order)
     db.session.commit()
     db.session.refresh(order)
     return order
 
-
-@app.route("/orders/<int:order_id>", methods=["PUT"])
-@marshal_with(OrderSchema())
-@use_kwargs(
-    {
-        "name": fields.Str(),
-        "description": fields.Str(),
-        "price": fields.Float(),
-    }
-)
-def route_order_update(order_id, **kwargs):
-    order = Order.query.filter(Order.id == order_id).first()
-    for key, val in kwargs.items():
-        if val is not None:
-            setattr(order, key, val)
-    db.session.add(order)
-    db.session.commit()
-    db.session.refresh(order)
-    return order
 
 @app.route("/orders/<int:order_id>", methods=["DELETE"])
 def route_order_delete(order_id):
